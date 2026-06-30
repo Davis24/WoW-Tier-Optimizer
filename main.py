@@ -1,6 +1,5 @@
 import pulp
 from pulp import PULP_CBC_CMD
-from enum import Enum
 from rich import print as rprint
 from rich.table import Table
 from rich.console import Console
@@ -554,7 +553,6 @@ for raider in raiders:
     for slot in tier_slots:
         for group in token_groups:
             if token_dv[raider][group][slot].varValue == 1:
-                print(token_dv[raider][group][slot])
                 allocation_data.append({
                      'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
                      'Class Pool': group, 
@@ -566,7 +564,7 @@ for raider in raiders:
                     allocation_data.append({
                         'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
                         'Class Pool': group, 
-                        'Source': f'LFR Drop Token ({faction})', 
+                        'Source': f'LFR Drop Token ({faction.name})', 
                         'Slot': slot, 
                         'Faction': raider_factions[raider]})
         if vault_dv[raider][slot].varValue == 1:
