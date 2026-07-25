@@ -15,6 +15,7 @@ class Class(Enum):
     WARLOCK = "8788EE",
     WARRIOR = "C69B6D",
 
+
 class Type(Enum):
     TANK = 1,
     DPS = 2,

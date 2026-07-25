@@ -1,0 +1,85 @@
+## Variables that will change but I dont want people in main.py changing them
+## Made it a YAML to be more friendly. Note to self: May do this with roster_information later.
+
+total_omni_drops_this_week: 2
+omni_token_name: "Slumbering Coil Curio" # Will leave both options in case this doesnt work
+
+token_name:
+  cloth:
+    "Venomwoven Effigy": "Head"
+    "Venomwoven Remnant": "Shoulder"
+    "Venomwoven Icon": "Chest" 
+    "Venomwoven Idol": "Hands" 
+    "Venomwoven Relic": "Legs"
+  leather:
+    "Venomcured Effigy": "Head"
+    "Venomcured Remnant": "Shoulder"
+    "Venomcured Icon": "Chest"
+    "Venomcured Idol": "Hands"
+    "Venomcured Relic": "Legs"
+  mail:
+    "Venomcast Effigy": "Head"
+    "Venomcast Remnant": "Shoulder"
+    "Venomcast Icon": "Chest"
+    "Venomcast Idol": "Hands"
+    "Venomcast Relic": "Legs"
+  plate:
+    "Venomforged Effigy": "Head"
+    "Venomforged Remnant": "Shoulder"
+    "Venomforged Icon": "Chest" 
+    "Venomforged Idol": "Hands" 
+    "Venomforged Relic": "Legs"  
+    
+
+Faction.ALLIANCE: 
+  cloth:
+    Head: 0
+    Shoulder: 1
+    Chest: 0
+    Hands: 0 
+    Legs: 1
+  leather:
+    Head: 0
+    Shoulder: 1
+    Chest: 0
+    Hands: 0 
+    Legs: 1
+  mail:
+    Head: 0
+    Shoulder: 1
+    Chest: 0
+    Hands: 0 
+    Legs: 1
+  plate:
+    Head: 0
+    Shoulder: 1
+    Chest: 0
+    Hands: 0 
+    Legs: 1
+
+Faction.HORDE: 
+  cloth:
+    Head: 0
+    Shoulder: 1
+    Chest: 0
+    Hands: 0 
+    Legs: 1
+  leather:
+    Head: 0
+    Shoulder: 1
+    Chest: 0
+    Hands: 0 
+    Legs: 1
+  mail:
+    Head: 0
+    Shoulder: 1
+    Chest: 0
+    Hands: 0 
+    Legs: 1
+  plate:
+    Head: 0
+    Shoulder: 1
+    Chest: 0
+    Hands: 0 
+    Legs: 1
+

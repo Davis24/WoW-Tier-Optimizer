@@ -1,3 +1,4 @@
+# Author's Note: If you are unfamiliar with Linear Programming and wish to know please consult the references section of the README.
 import pulp
 from pulp import PULP_CBC_CMD
 from rich import print as rprint
@@ -5,12 +6,10 @@ from rich.table import Table
 from rich.console import Console
 from rich_tools import df_to_table
 import pandas as pd
-import csv, json
+import csv, json, yaml, re
 from helper import Class, Type, Faction
 
-# Author's Note: If you are unfamiliar with Linear Programming and wish to know please consult the references section of the README.
-
-# Midnight Tier Slots
+# Midnight Defaults
 tier_slots = ['Head', 'Shoulder', 'Chest', 'Hands', 'Legs']
 token_groups = ['cloth', 'leather', 'mail', 'plate']
 factions = [Faction.ALLIANCE, Faction.HORDE]
@@ -24,7 +23,7 @@ raider_factions = {}
 
 ####################
 #
-#   Ingest Raider Information from Input
+#   Ingest Raider Information from Input Folder
 #
 ####################
 
@@ -39,11 +38,11 @@ for armor_type in roster_data:
         roster_data[armor_type][raider]['class'] = Class[roster_data[armor_type][raider]['class']]
         roster_data[armor_type][raider]['type'] = Type[roster_data[armor_type][raider]['type']]
         roster_data[armor_type][raider]['faction'] = Faction[roster_data[armor_type][raider]['faction']]
-        roster_data[armor_type][raider]['current_tier'] = vault_df.loc[vault_df]["Current Tier Slots"].values
+        roster_data[armor_type][raider]['current_tier'] = vault_df.loc[vault_df['Name'] == raider]["Current Tier Slots"].values
         roster_data[armor_type][raider]['vault_options'] = vault_df.loc[vault_df['Name'] == raider]["Vault Option (Tier)"].values
 
 # Raider Information 
-# Split by armor type to make it easier to keep the roster straight.
+# Split by armor type.
 leather_raiders = roster_data["leather_raiders"]
 cloth_raiders = roster_data["cloth_raiders"]
 mail_raiders = roster_data["mail_raiders"]
@@ -52,103 +51,71 @@ plate_raiders = roster_data["plate_raiders"]
 ####################
 #
 #   Generate total_tier_drops_by type from CSV file. 
-#   Output format comes from Addon: LooHoard - can find it on CurseForge.
+#   Output format comes from a modified Addon: LootHoard - my modified version can be found here X:
 #
 ####################
 
+with open('./config/config.yaml', 'r') as file:
+    config_info = yaml.safe_load(file)
+
+total_omni_drops_this_week = config_info['total_omni_drops_this_week']
+
+
+
+total_tokens_output = []
 total_tier_drops_by_type = {
     "cloth" : {
         'Head': 0, 
-        'Shoulder': 1, 
-        'Chest': 0, 
-        'Hands': 0, 
-        'Legs': 1
-    },
-    "leather" : {
-        'Head': 1, 
         'Shoulder': 0, 
         'Chest': 0, 
         'Hands': 0, 
-        'Legs': 1
+        'Legs': 0
+    },
+    "leather" : {
+        'Head': 0, 
+        'Shoulder': 0, 
+        'Chest': 0, 
+        'Hands': 0, 
+        'Legs': 0
     },
     "mail" : {
-        'Head': 1, 
-        'Shoulder': 1, 
-        'Chest': 1, 
-        'Hands': 1, 
-        'Legs': 1
+        'Head': 0, 
+        'Shoulder': 0, 
+        'Chest': 0, 
+        'Hands': 0, 
+        'Legs': 0
     },
     "plate" : {
         'Head': 0, 
         'Shoulder': 0, 
         'Chest': 0, 
         'Hands': 0, 
-        'Legs': 1
+        'Legs': 0
     }
 
 }
 
-# NOTE: These will need to be manually input. No reason to parse a file for Omni Tokens since only off last boss.
-#       LFR Drops I cannot parse since I would only have data for one-half of the raid. 
-total_omni_drops_this_week = 2
-lfr_drops_by_faction = {
-    Faction.ALLIANCE : {"cloth" : {
-        'Head': 0, 
-        'Shoulder': 1, 
-        'Chest': 0, 
-        'Hands': 0, 
-        'Legs': 1
-    },
-    "leather" : {
-        'Head': 1, 
-        'Shoulder': 0, 
-        'Chest': 0, 
-        'Hands': 0, 
-        'Legs': 1
-    },
-    "mail" : {
-        'Head': 1, 
-        'Shoulder': 1, 
-        'Chest': 1, 
-        'Hands': 1, 
-        'Legs': 1
-    },
-    "plate" : {
-        'Head': 0, 
-        'Shoulder': 0, 
-        'Chest': 0, 
-        'Hands': 0, 
-        'Legs': 0
-    }},
+# Name - Slot - Difficulty
 
-    Faction.HORDE : {"cloth" : {
-        'Head': 0, 
-        'Shoulder': 1, 
-        'Chest': 0, 
-        'Hands': 0, 
-        'Legs': 1
-    },
-    "leather" : {
-        'Head': 1, 
-        'Shoulder': 0, 
-        'Chest': 0, 
-        'Hands': 0, 
-        'Legs': 1
-    },
-    "mail" : {
-        'Head': 1, 
-        'Shoulder': 1, 
-        'Chest': 1, 
-        'Hands': 1, 
-        'Legs': 1
-    },
-    "plate" : {
-        'Head': 0, 
-        'Shoulder': 0, 
-        'Chest': 0, 
-        'Hands': 0, 
-        'Legs': 0
-    }}
+with open('./input/raid_loot.csv', 'r') as file:
+    #Date,Raid,Difficulty,Boss,Player,Item
+    file_reader = csv.reader(file)
+    for line in file_reader:
+        for type in config_info["token_name"]:
+            if line[5] in config_info["token_name"][type].keys():
+                slot = config_info["token_name"][type][line[5]]
+                total_tier_drops_by_type[type][slot] += 1
+                total_tokens_output.append({
+                    'Name': line[5],
+                    'Armor Type': type,
+                    'Slot' : slot,
+                    'ilvl': f"[#0070dd]{line[2]}[/#0070dd]" if line[2] == "Heroic" else f"[#1eff00]{line[2]}[/#1eff00]",
+                })
+
+
+lfr_drops_by_faction = {
+    Faction.ALLIANCE : config_info["Faction.ALLIANCE"],
+    Faction.HORDE : config_info["Faction.HORDE"]
 }
 
 ## Do Not Touch Below
@@ -323,6 +290,7 @@ prob.solve(PULP_CBC_CMD(msg=False))
 
 # --- Output Results ---
 print(f"Status: {pulp.LpStatus[prob.status]}")
+raid_drop_token = []
 allocation_data = []
 for raider in raiders:
     for slot in tier_slots:
@@ -334,6 +302,12 @@ for raider in raiders:
                      'Source': 'Raid Drop Token', 
                      'Slot': slot, 
                      'Faction': ''})
+                raid_drop_token.append({
+                    'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
+                    'Class Pool': group, 
+                    'Source': 'Raid Drop Token', 
+                    'Slot': slot, 
+                    'Faction': ''})
             for faction in factions:
                 if lfr_dv[raider][faction][group][slot].varValue == 1:
                     allocation_data.append({
@@ -374,9 +348,15 @@ console.print(table)
 print("\nSet Bonus Milestones Achieved This Week:")
 for raider in raiders:
     if has_4pc[raider].varValue == 1:
-        rprint(f"🎉 [#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}] ({raider_groups[raider]}) has secured their 4-Piece Set Bonus!")
+        rprint(f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}] ({raider_groups[raider]}) has secured their 4-Piece Set Bonus!")
 
 print("\nMissing 4-Piece:")
 for raider in raiders:
     if has_4pc[raider].varValue == 0:
         rprint(f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}] ({raider_groups[raider]})")
+
+new_df = pd.DataFrame(total_tokens_output)
+new_table = Table(title=f"Total Tier Tokens (Total: {new_df.shape[0]})", show_lines=True)
+new_df.sort_values('Armor Type', inplace=True)
+df_to_table(new_df, rich_table=new_table)
+console.print(new_table)
