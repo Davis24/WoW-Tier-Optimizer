@@ -5,6 +5,7 @@ from rich.table import Table
 from rich.console import Console
 from rich_tools import df_to_table
 import pandas as pd
+import csv, json
 from helper import Class, Type, Faction
 
 # Author's Note: If you are unfamiliar with Linear Programming and wish to know please consult the references section of the README.
@@ -23,268 +24,33 @@ raider_factions = {}
 
 ####################
 #
-#   Modify as needed
+#   Ingest Raider Information from Input
 #
 ####################
+
+with open("./input/roster_information.json") as roster_file:
+    roster_data = json.load(roster_file)
+
+vault_df = pd.read_csv("./input/vault_input.csv")
+ 
+#Fix Enums & Update Vault
+for armor_type in roster_data:
+    for raider in roster_data[armor_type]:
+        roster_data[armor_type][raider]['class'] = Class[roster_data[armor_type][raider]['class']]
+        roster_data[armor_type][raider]['type'] = Type[roster_data[armor_type][raider]['type']]
+        roster_data[armor_type][raider]['faction'] = Faction[roster_data[armor_type][raider]['faction']]
+        roster_data[armor_type][raider]['current_tier'] = vault_df.loc[vault_df]["Current Tier Slots"].values
+        roster_data[armor_type][raider]['vault_options'] = vault_df.loc[vault_df['Name'] == raider]["Vault Option (Tier)"].values
+
 # Raider Information 
 # Split by armor type to make it easier to keep the roster straight.
+leather_raiders = roster_data["leather_raiders"]
+cloth_raiders = roster_data["cloth_raiders"]
+mail_raiders = roster_data["mail_raiders"]
+plate_raiders = roster_data["plate_raiders"]
 
-leather_raiders = {
-    'Boom': {
-        "class" : Class.DRUID,
-        "type" : Type.DPS,
-        "faction": Faction.ALLIANCE,
-        "current_tier": ['Head'],  
-        "vault_options": ['Shoulder'],
-        "catalyst_charges": 1,
-        "player_weights": 2.0
-    }, 
 
-    'Charlie': {
-        "class" : Class.DRUID,
-        "type" : Type.TANK,
-         "faction": Faction.ALLIANCE,
-        "current_tier": ['Chest', 'Legs'], 
-        "vault_options": ['Head'],
-        "catalyst_charges": 0,
-        "player_weights": 0.5
-    },
 
-    'Fka': {
-        "class" : Class.DEMON_HUNTER,
-        "type" : Type.DPS,
-        "faction": Faction.ALLIANCE,
-        "current_tier": [],
-        "vault_options": ['Chest', 'Legs'],
-        "catalyst_charges": 2,
-        "player_weights": 2.0
-    },
-
-    'Jayken': {
-        "class" : Class.ROGUE,
-        "type" : Type.DPS,
-         "faction": Faction.HORDE,
-        "current_tier": ['Shoulder', 'Hands', 'Legs'],
-        "vault_options": [],
-        "catalyst_charges": 0,
-        "player_weights": 2.0
-    },
-
-    'Nocth': {
-        "class" : Class.DEMON_HUNTER,
-        "type" : Type.DPS,
-        "faction": Faction.HORDE,
-        "current_tier": ['Head', 'Chest'],
-        "vault_options": ['Hands'],
-        "catalyst_charges": 1,
-        "player_weights": 1.0
-    },
-
-    'Nymu': {
-        "class" : Class.MONK,
-        "type" : Type.HEALER,
-        "faction": Faction.HORDE,
-        "current_tier": ['Head', 'Chest'],
-        "vault_options": ['Hands'],
-        "catalyst_charges": 1,
-        "player_weights": 1.0
-    },
-
-    'Puti': {
-        "class" : Class.DRUID,
-        "type" : Type.HEALER,
-        "faction": Faction.HORDE,
-        "current_tier": ['Head', 'Chest'],
-        "vault_options": ['Hands'],
-        "catalyst_charges": 1,
-        "player_weights": 1.0
-    },
-
-    'Rev': {
-        "class" : Class.MONK,
-        "type" : Type.DPS,
-        "faction": Faction.HORDE,
-        "current_tier": ['Head', 'Chest'],
-        "vault_options": ['Hands'],
-        "catalyst_charges": 1,
-        "player_weights": 1.0
-    },
-
-    'Vao': {
-        "class" : Class.DEMON_HUNTER,
-        "type" : Type.DPS,
-        "faction": Faction.HORDE,
-        "current_tier": ['Head', 'Chest'],
-        "vault_options": ['Hands'],
-        "catalyst_charges": 1,
-        "player_weights": 1.0
-    },
-}
-cloth_raiders = {
-     'Bang': {
-        "class" : Class.MAGE,
-        "type" : Type.DPS,
-        "faction": Faction.HORDE,
-        "current_tier": ['Head'],  
-        "vault_options": ['Shoulder'],
-        "catalyst_charges": 1,
-        "player_weights": 1.0
-    }, 
-
-    'Beef': {
-        "class" : Class.PRIEST,
-        "type" : Type.HEALER,
-        "faction": Faction.HORDE,
-        "current_tier": ['Chest', 'Legs'], 
-        "vault_options": ['Head'],
-        "catalyst_charges": 0,
-        "player_weights": 1.0
-    },
-
-    'Marcx': {
-        "class" : Class.WARLOCK,
-        "type" : Type.DPS,
-        "current_tier": [],
-        "faction": Faction.HORDE,
-        "vault_options": ['Chest', 'Legs'],
-        "catalyst_charges": 2,
-        "player_weights": 1.0
-    },
-
-    'Sol': {
-        "class" : Class.MAGE,
-        "type" : Type.DPS,
-        "faction": Faction.HORDE,
-        "current_tier": ['Shoulder', 'Hands', 'Legs'],
-        "vault_options": [],
-        "catalyst_charges": 0,
-        "player_weights": 1.0
-    },
-
-    'Szardz': {
-        "class" : Class.WARLOCK,
-        "type" : Type.DPS,
-        "faction": Faction.HORDE,
-        "current_tier": ['Head', 'Chest'],
-        "vault_options": ['Hands'],
-        "catalyst_charges": 1,
-        "player_weights": 1.0
-    },
-
-    'Ulti': {
-        "class" : Class.PRIEST,
-        "type" : Type.DPS,
-        "faction": Faction.HORDE,
-        "current_tier": ['Head', 'Chest'],
-        "vault_options": ['Hands'],
-        "catalyst_charges": 1,
-        "player_weights": 1.0
-    },
-}
-mail_raiders={
-    'Astra': {
-        "class" : Class.EVOKER,
-        "type" : Type.HEALER,
-        "faction": Faction.ALLIANCE,
-        "current_tier": ['Head'],  
-        "vault_options": ['Shoulder'],
-        "catalyst_charges": 1,
-        "player_weights": 1.0
-    }, 
-
-    'Brainranger': {
-        "class" : Class.HUNTER,
-        "type" : Type.DPS,
-        "faction": Faction.ALLIANCE,
-        "current_tier": ['Chest', 'Legs'], 
-        "vault_options": ['Head'],
-        "catalyst_charges": 0,
-        "player_weights": 1.0
-    },
-
-    'Elaine': {
-        "class" : Class.EVOKER,
-        "type" : Type.DPS,
-        "faction": Faction.ALLIANCE,
-        "current_tier": [],
-        "vault_options": ['Chest', 'Legs'],
-        "catalyst_charges": 2,
-        "player_weights": 1.0
-    },
-
-    'Gibdo': {
-        "class" : Class.SHAMAN,
-        "type" : Type.DPS,
-        "faction": Faction.ALLIANCE,
-        "current_tier": ['Shoulder', 'Hands', 'Legs'],
-        "vault_options": [],
-        "catalyst_charges": 0,
-        "player_weights": 1.0
-    },
-
-    'Kyle': {
-        "class" : Class.SHAMAN,
-        "type" : Type.DPS,
-        "faction": Faction.ALLIANCE,
-        "current_tier": [],
-        "vault_options": ['Chest', 'Legs'],
-        "catalyst_charges": 2,
-        "player_weights": 1.0
-    },
-
-    'Regal': {
-        "class" : Class.HUNTER,
-        "type" : Type.DPS,
-        "faction": Faction.ALLIANCE,
-        "current_tier": ['Shoulder', 'Hands', 'Legs'],
-        "vault_options": [],
-        "catalyst_charges": 0,
-        "player_weights": 1.0
-    },
-}
-plate_raiders={
-    'Devysknight': {
-        "class" : Class.DEATH_KNIGHT,
-        "type" : Type.DPS,
-        "faction": Faction.ALLIANCE,
-        "current_tier": ['Head'],  
-        "vault_options": ['Shoulder'],
-        "catalyst_charges": 0,
-        "player_weights": 1.0
-    }, 
-
-    'Mekes': {
-        "class" : Class.PALADIN,
-        "type" : Type.TANK,
-        "faction": Faction.ALLIANCE,
-        "current_tier": ['Chest', 'Legs'], 
-        "vault_options": ['Head'],
-        "catalyst_charges": 0,
-        "player_weights": 1.0
-    },
-
-    'Pjs': {
-        "class" : Class.PALADIN,
-        "type" : Type.HEALER,
-        "faction": Faction.ALLIANCE,
-        "current_tier": [],
-        "vault_options": ['Chest', 'Legs'],
-        "catalyst_charges": 0,
-        "player_weights": 1.0
-    },
-
-    'Worm': {
-        "class" : Class.WARRIOR,
-        "type" : Type.DPS,
-        "faction": Faction.HORDE,
-        "current_tier": ['Shoulder', 'Hands', 'Legs'],
-        "vault_options": [],
-        "catalyst_charges": 0,
-        "player_weights": 1.0
-    },
-}
- 
-total_omni_drops_this_week = 2
 total_tier_drops_by_type = {
     "cloth" : {
         'Head': 0, 
@@ -316,6 +82,10 @@ total_tier_drops_by_type = {
     }
 
 }
+
+# NOTE: These will need to be manually input. No reason to parse a file for Omni Tokens since only off last boss.
+#       LFR Drops I cannot parse since I would only have data for one-half of the raid. 
+total_omni_drops_this_week = 2
 lfr_drops_by_faction = {
     Faction.ALLIANCE : {"cloth" : {
         'Head': 0, 

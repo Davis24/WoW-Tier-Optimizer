@@ -1,0 +1,262 @@
+{
+    "cloth_raiders": {
+        "Bang": {
+            "class" : "MAGE",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Head"],  
+            "vault_options": ["Shoulder"],
+            "catalyst_charges": 1,
+            "player_weights": 1.0
+        }, 
+        "Beef": {
+            "class" : "PRIEST",
+            "type" : "HEALER",
+            "faction": "HORDE",
+            "current_tier": ["Chest", "Legs"], 
+            "vault_options": ["Head"],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        },
+        "JD": {
+            "class" : "MAGE",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "vault_options": [],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        },
+        "Marcx": {
+            "class" : "WARLOCK",
+            "type" : "DPS",
+            "current_tier": [],
+            "faction": "HORDE",
+            "vault_options": ["Chest", "Legs"],
+            "catalyst_charges": 2,
+            "player_weights": 1.0
+        },     
+        "Sol": {
+            "class" : "MAGE",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "vault_options": [],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        },
+
+        "Szardz": {
+            "class" : "WARLOCK",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Head", "Chest"],
+            "vault_options": ["Hands"],
+            "catalyst_charges": 1,
+            "player_weights": 1.0
+        },
+
+        "Ulti": {
+            "class" : "PRIEST",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Head", "Chest"],
+            "vault_options": ["Hands"],
+            "catalyst_charges": 1,
+            "player_weights": 1.0
+        }
+    },
+    "leather_raiders": {
+        "Boom": {
+            "class": "DRUID",
+            "type": "DPS",
+            "faction": "ALLIANCE",
+            "current_tier": ["Head"],  
+            "vault_options": ["Shoulder"],
+            "catalyst_charges": 1,
+            "player_weights": 2.0
+        }, 
+
+        "Charlie": {
+            "class" : "DRUID",
+            "type" : "TANK",
+            "faction": "ALLIANCE",
+            "current_tier": ["Chest", "Legs"], 
+            "vault_options": ["Head"],
+            "catalyst_charges": 0,
+            "player_weights": 0.5
+        },
+
+        "Fka": {
+            "class" : "DEMON_HUNTER",
+            "type" : "DPS",
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": ["Chest", "Legs"],
+            "catalyst_charges": 2,
+            "player_weights": 2.0
+        },
+
+        "Jayken": {
+            "class" : "ROGUE",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "vault_options": [],
+            "catalyst_charges": 0,
+            "player_weights": 2.0
+        },
+
+        "Nocth": {
+            "class" : "DEMON_HUNTER",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Head", "Chest"],
+            "vault_options": ["Hands"],
+            "catalyst_charges": 1,
+            "player_weights": 1.0
+        },
+
+        "Nymu": {
+            "class" : "MONK",
+            "type" : "HEALER",
+            "faction": "HORDE",
+            "current_tier": ["Head", "Chest"],
+            "vault_options": ["Hands"],
+            "catalyst_charges": 1,
+            "player_weights": 1.0
+        },
+
+        "Puti": {
+            "class" : "DRUID",
+            "type" : "HEALER",
+            "faction": "HORDE",
+            "current_tier": ["Head", "Chest"],
+            "vault_options": ["Hands"],
+            "catalyst_charges": 1,
+            "player_weights": 1.0
+        },
+
+        "Rev": {
+            "class" : "MONK",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Head", "Chest"],
+            "vault_options": ["Hands"],
+            "catalyst_charges": 1,
+            "player_weights": 1.0
+        },
+
+        "Vao": {
+            "class" : "DEMON_HUNTER",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Head", "Chest"],
+            "vault_options": ["Hands"],
+            "catalyst_charges": 1,
+            "player_weights": 1.0
+        }
+    },
+    "mail_raiders": {
+        "Astra": {
+            "class" : "EVOKER",
+            "type" : "HEALER",
+            "faction": "ALLIANCE",
+            "current_tier": ["Head"],  
+            "vault_options": ["Shoulder"],
+            "catalyst_charges": 1,
+            "player_weights": 1.0
+        }, 
+
+        "Brainranger": {
+            "class" : "HUNTER",
+            "type" : "DPS",
+            "faction": "ALLIANCE",
+            "current_tier": ["Chest", "Legs"], 
+            "vault_options": ["Head"],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        },
+
+        "Elaine": {
+            "class" : "EVOKER",
+            "type" : "DPS",
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": ["Chest", "Legs"],
+            "catalyst_charges": 2,
+            "player_weights": 1.0
+        },
+
+        "Gibdo": {
+            "class" : "SHAMAN",
+            "type" : "DPS",
+            "faction": "ALLIANCE",
+            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "vault_options": [],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        },
+
+        "Kyle": {
+            "class" : "SHAMAN",
+            "type" : "DPS",
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": ["Chest", "Legs"],
+            "catalyst_charges": 2,
+            "player_weights": 1.0
+        },
+
+        "Regal": {
+            "class" : "HUNTER",
+            "type" : "DPS",
+            "faction": "ALLIANCE",
+            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "vault_options": [],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        }
+    },
+    "plate_raiders": {
+        "Devy": {
+            "class" : "DEATH_KNIGHT",
+            "type" : "DPS",
+            "faction": "ALLIANCE",
+            "current_tier": ["Head"],  
+            "vault_options": ["Shoulder"],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        }, 
+
+        "Mekes": {
+            "class" : "PALADIN",
+            "type" : "TANK",
+            "faction": "ALLIANCE",
+            "current_tier": ["Chest", "Legs"], 
+            "vault_options": ["Head"],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        },
+
+        "Pjs": {
+            "class" : "PALADIN",
+            "type" : "HEALER",
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": ["Chest", "Legs"],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        },
+
+        "Worm": {
+            "class" : "WARRIOR",
+            "type" : "DPS",
+            "faction": "HORDE",
+            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "vault_options": [],
+            "catalyst_charges": 0,
+            "player_weights": 1.0
+        }
+    }
+}
