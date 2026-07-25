@@ -14,54 +14,7 @@ tier_slots = ['Head', 'Shoulder', 'Chest', 'Hands', 'Legs']
 token_groups = ['cloth', 'leather', 'mail', 'plate']
 factions = [Faction.ALLIANCE, Faction.HORDE]
 
-# Pulp DataDicts
-current_tier = {} # Current Tier Pieces
-vault_options = {} # Vault Tier Options
-catalyst_charges = {} # Number of Catalyst Charges
-player_weights = {} # Player Weights - The higher these values are set in the raider dictionary, the higher value completing their tier set is given
-raider_factions = {} 
-
-####################
-#
-#   Ingest Raider Information from Input Folder
-#
-####################
-
-with open("./input/roster_information.json") as roster_file:
-    roster_data = json.load(roster_file)
-
-vault_df = pd.read_csv("./input/vault_input.csv")
- 
-#Fix Enums & Update Vault
-for armor_type in roster_data:
-    for raider in roster_data[armor_type]:
-        roster_data[armor_type][raider]['class'] = Class[roster_data[armor_type][raider]['class']]
-        roster_data[armor_type][raider]['type'] = Type[roster_data[armor_type][raider]['type']]
-        roster_data[armor_type][raider]['faction'] = Faction[roster_data[armor_type][raider]['faction']]
-        roster_data[armor_type][raider]['current_tier'] = vault_df.loc[vault_df['Name'] == raider]["Current Tier Slots"].values
-        roster_data[armor_type][raider]['vault_options'] = vault_df.loc[vault_df['Name'] == raider]["Vault Option (Tier)"].values
-
-# Raider Information 
-# Split by armor type.
-leather_raiders = roster_data["leather_raiders"]
-cloth_raiders = roster_data["cloth_raiders"]
-mail_raiders = roster_data["mail_raiders"]
-plate_raiders = roster_data["plate_raiders"]
-
-####################
-#
-#   Generate total_tier_drops_by type from CSV file. 
-#   Output format comes from a modified Addon: LootHoard - my modified version can be found here X:
-#
-####################
-
-with open('./config/config.yaml', 'r') as file:
-    config_info = yaml.safe_load(file)
-
-total_omni_drops_this_week = config_info['total_omni_drops_this_week']
-
-
-
+# Other Variables
 total_tokens_output = []
 total_tier_drops_by_type = {
     "cloth" : {
@@ -95,12 +48,59 @@ total_tier_drops_by_type = {
 
 }
 
-# Name - Slot - Difficulty
+# Pulp DataDicts
+current_tier = {} # Current Tier Pieces
+vault_options = {} # Vault Tier Options
+catalyst_charges = {} # Number of Catalyst Charges
+player_weights = {} # Player Weights - The higher these values are set in the raider dictionary, the higher value completing their tier set is given
+raider_factions = {} 
 
+#####################
+# --- Ingest Data ---
+#####################
+rprint("Ingesting Data")
+
+with open("./input/roster_information.json") as roster_file:
+    roster_data = json.load(roster_file)
+
+with open('./config/config.yaml', 'r') as file:
+    config_info = yaml.safe_load(file)
+
+
+
+vault_df = pd.read_csv("./input/vault_input.csv")
+
+
+#####################
+# --- Data Setup  ---
+#####################
+total_omni_drops_this_week = config_info['total_omni_drops_this_week']
+lfr_drops_by_faction = {
+    Faction.ALLIANCE : config_info["Faction.ALLIANCE"],
+    Faction.HORDE : config_info["Faction.HORDE"]
+}
+ 
+#Fix Enums & Update Vault
+for armor_type in roster_data:
+    for raider in roster_data[armor_type]:
+        roster_data[armor_type][raider]['class'] = Class[roster_data[armor_type][raider]['class']]
+        roster_data[armor_type][raider]['type'] = Type[roster_data[armor_type][raider]['type']]
+        roster_data[armor_type][raider]['faction'] = Faction[roster_data[armor_type][raider]['faction']]
+        roster_data[armor_type][raider]['current_tier'] = vault_df.loc[vault_df['Name'] == raider]["Current Tier Slots"].values
+        roster_data[armor_type][raider]['vault_options'] = vault_df.loc[vault_df['Name'] == raider]["Vault Option (Tier)"].values
+
+# Raider Information 
+# Split by armor type.
+leather_raiders = roster_data["leather_raiders"]
+cloth_raiders = roster_data["cloth_raiders"]
+mail_raiders = roster_data["mail_raiders"]
+plate_raiders = roster_data["plate_raiders"]
+
+# Parse Raid Loot - Ugly way to match all this up. Currently Token LUA does not allow me to pull slot type for a token without cross-referencing IDs. 
 with open('./input/raid_loot.csv', 'r') as file:
     #Date,Raid,Difficulty,Boss,Player,Item
-    file_reader = csv.reader(file)
-    for line in file_reader:
+    raid_loot = csv.reader(file)
+    for line in raid_loot:
         for type in config_info["token_name"]:
             if line[5] in config_info["token_name"][type].keys():
                 slot = config_info["token_name"][type][line[5]]
@@ -112,13 +112,6 @@ with open('./input/raid_loot.csv', 'r') as file:
                     'ilvl': f"[#0070dd]{line[2]}[/#0070dd]" if line[2] == "Heroic" else f"[#1eff00]{line[2]}[/#1eff00]",
                 })
 
-
-lfr_drops_by_faction = {
-    Faction.ALLIANCE : config_info["Faction.ALLIANCE"],
-    Faction.HORDE : config_info["Faction.HORDE"]
-}
-
-## Do Not Touch Below
 
 ############################
 # --- Input Data Setup   ---
@@ -287,9 +280,11 @@ prob += pulp.lpSum(
 
 # Solve
 prob.solve(PULP_CBC_CMD(msg=False))
-
+rprint(f"Status: {pulp.LpStatus[prob.status]}")
+########################
 # --- Output Results ---
-print(f"Status: {pulp.LpStatus[prob.status]}")
+########################
+rprint("Generating Output.")
 raid_drop_token = []
 allocation_data = []
 for raider in raiders:
@@ -318,30 +313,43 @@ for raider in raiders:
             allocation_data.append({
                 'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]",  
                 'Class Pool': '', 
-                'Source': 'Great Vault', 
+                'Source': '[#FFA5A5]Great Vault[/#FFA5A5]', 
                 'Slot': slot, 
                 'Faction': ''})
         if catalyst_dv[raider][slot].varValue == 1:
             allocation_data.append({
                 'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
                 'Class Pool': '', 
-                'Source': '⚡ Use Catalyst Charge', 
+                'Source': '[#E0AC3F]Use Catalyst Charge[/#E0AC3F]', 
                 'Slot': slot, 
                 'Faction': ''})
         if omni_dv[raider][slot].varValue == 1:
             allocation_data.append({
                 'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
                 'Class Pool': '', 
-                'Source': '🌟 Omni Token', 
+                'Source': '[#3F72E0]Omni Token[/#3F72E0]', 
                 'Slot': slot, 
                 'Faction': ''})  
     allocation_data.append({'Raider':"-", 'Class Pool':"-", 'Source': "-", 'Slot':"-", 'Faction': "-"})
 results_df = pd.DataFrame(allocation_data)
+total_tokens_df = pd.DataFrame(total_tokens_output)
+who_is_get_df = pd.DataFrame(raid_drop_token)
+###
 
-table = Table(title='Optimal Distribution Table (Drops, Vaults & Catalyst)')
-df_to_table(results_df, rich_table=table)
+distribution_table = Table(title='🐍🐍🐍 Optimal Distribution Table (Drops, Vaults & Catalyst)🐍🐍🐍')
+df_to_table(results_df, rich_table=distribution_table)
 console=Console()
-console.print(table)
+console.print(distribution_table)
+
+total_tokens_table = Table(title=f"Total Tier Tokens (Total: {total_tokens_df.shape[0]})", show_lines=True)
+total_tokens_df.sort_values('Armor Type', inplace=True)
+df_to_table(total_tokens_df, rich_table=total_tokens_table)
+console.print(total_tokens_table)
+
+who_is_get_table = Table(title=f"Who is Getting Tokens?")
+df_to_table(who_is_get_df, rich_table=who_is_get_table)
+console.print(who_is_get_table)
+
 
 print("\nSet Bonus Milestones Achieved This Week:")
 for raider in raiders:
@@ -352,15 +360,3 @@ print("\nMissing 4-Piece:")
 for raider in raiders:
     if has_4pc[raider].varValue == 0:
         rprint(f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}] ({raider_groups[raider]})")
-
-new_df = pd.DataFrame(total_tokens_output)
-new_table = Table(title=f"Total Tier Tokens (Total: {new_df.shape[0]})", show_lines=True)
-new_df.sort_values('Armor Type', inplace=True)
-df_to_table(new_df, rich_table=new_table)
-console.print(new_table)
-
-
-new_df2 = pd.DataFrame(raid_drop_token)
-new_table2 = Table(title=f"Who is Getting Tokens?")
-df_to_table(new_df2, rich_table=new_table2)
-console.print(new_table2)
