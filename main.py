@@ -296,26 +296,24 @@ for raider in raiders:
     for slot in tier_slots:
         for group in token_groups:
             if token_dv[raider][group][slot].varValue == 1:
-                allocation_data.append({
+                tmp = {
                      'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
                      'Class Pool': group, 
                      'Source': 'Raid Drop Token', 
                      'Slot': slot, 
-                     'Faction': ''})
-                raid_drop_token.append({
-                    'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
-                    'Class Pool': group, 
-                    'Source': 'Raid Drop Token', 
-                    'Slot': slot, 
-                    'Faction': ''})
+                     'Faction': ''}
+                allocation_data.append(tmp)
+                raid_drop_token.append(tmp)
             for faction in factions:
                 if lfr_dv[raider][faction][group][slot].varValue == 1:
-                    allocation_data.append({
+                    tmp = {
                         'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
                         'Class Pool': group, 
                         'Source': f'LFR Drop Token ({faction.name})', 
                         'Slot': slot, 
-                        'Faction': raider_factions[raider]})
+                        'Faction': raider_factions[raider]}
+                    allocation_data.append(tmp)
+                    raid_drop_token.append(tmp)
         if vault_dv[raider][slot].varValue == 1:
             allocation_data.append({
                 'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]",  
@@ -360,3 +358,9 @@ new_table = Table(title=f"Total Tier Tokens (Total: {new_df.shape[0]})", show_li
 new_df.sort_values('Armor Type', inplace=True)
 df_to_table(new_df, rich_table=new_table)
 console.print(new_table)
+
+
+new_df2 = pd.DataFrame(raid_drop_token)
+new_table2 = Table(title=f"Who is Getting Tokens?")
+df_to_table(new_df2, rich_table=new_table2)
+console.print(new_table2)
