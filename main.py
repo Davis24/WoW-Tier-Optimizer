@@ -49,7 +49,12 @@ cloth_raiders = roster_data["cloth_raiders"]
 mail_raiders = roster_data["mail_raiders"]
 plate_raiders = roster_data["plate_raiders"]
 
-
+####################
+#
+#   Generate total_tier_drops_by type from CSV file. 
+#   Output format comes from Addon: LooHoard - can find it on CurseForge.
+#
+####################
 
 total_tier_drops_by_type = {
     "cloth" : {
