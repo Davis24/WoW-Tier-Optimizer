@@ -6,6 +6,7 @@ PuLP==3.3.2
 Pygments==2.20.0
 python-dateutil==2.9.0.post0
 pytz==2026.2
+PyYAML==6.0.3
 rich==14.3.4
 rich-tools==0.6.0
 scipy==1.18.0
