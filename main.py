@@ -336,6 +336,7 @@ total_tokens_df = pd.DataFrame(total_tokens_output)
 who_is_get_df = pd.DataFrame(raid_drop_token)
 ###
 
+#snakes for snake tier
 distribution_table = Table(title='🐍🐍🐍 Optimal Distribution Table (Drops, Vaults & Catalyst)🐍🐍🐍')
 df_to_table(results_df, rich_table=distribution_table)
 console=Console()

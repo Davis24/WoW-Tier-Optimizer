@@ -28,7 +28,7 @@ Since this tool was built specifically for my guild you will need to copy that w
 The character names in the `roster_information.json` file must match the names in Googlesheets. Otherwise this will throw an error.
 
 ##### External Datasources:
-- LootHoarder (My Fork): LootHoarder records all the Epic loot that drops in raid. This is used to generate the number of tokens for each armor type and slot. We export the CSV from this addon to be parsed.
+- [LootHoarder (My Fork)](https://github.com/Davis24/LootHoard): LootHoarder records all the Epic loot that drops in raid. This is used to generate the number of tokens for each armor type and slot. We export the CSV from this addon to be parsed.
 - GoogleSheets: Currently, there isn't a clean way (without everyone installing an addon) to track tier tokens in the vault. We rely on our raiders to input their information into a GoogleSheets a copy can be found [here](https://docs.google.com/spreadsheets/d/1f_0C3Zbrlt-i4pplJL0wYrj9coTwe6NrvfMDRLLRz5s/edit?usp=sharing).
     - Most of these tabs are unused but we're sticking with this format for now.
 
@@ -36,7 +36,7 @@ The character names in the `roster_information.json` file must match the names i
 
 With the collected data we need to update the following files before running the script. 
 
-1. `/input/roster_information.json`: Update this information regarding your raiders. See the [Roster Information Section]() for detailed information about each attribute.
+1. `/input/roster_information.json`: Update this information regarding your raiders. See the [Roster Information Section](#roster_information-JSON-Attributes) for detailed information about each attribute.
 2. `/input/vault_input.csv` : This file comes from our GoogleSheets template. With the GoogleSheets document open go to File &rarr; Download &rarr; CSV. Rename the file to `vault_input.csv` or copy and paste the contents.
 3. `/input/raid_loot.csv`: This is the data we export from the LootHoarder fork addon. Open the addon &rarr; Export &rarr; Copy and Paste. Replace all the data in the `raid_loot.csv` file.
 
@@ -79,11 +79,11 @@ For our particular application we are applying LP through the PULP Python Librar
 
 **Objective Function**: We apply the lpSum for all the decision variables weighted against the player_weights and apply a lower threshold for catalyst to minimize it's usage, this is because we want to consume tokens before catalysts.
 
-## LootHoarder
+## LootHoard
 
-I've modified this addon to include difficulty. While this is currently not being used in the optimization problem I wanted to add it in case it's ever needed. But also to be able to print out the full token breakdown.
+I've modified this [addon](https://github.com/Davis24/LootHoard) to include difficulty and clean-up some of the CSV breaking issues. My version: [LootHoard](https://github.com/Davis24/LootHoard)
 
-## roster_information.json Attributes
+## roster_information JSON Attributes
 
 Lets take a look at the `roster_information.json` file and what each attribute is used for. 
 
