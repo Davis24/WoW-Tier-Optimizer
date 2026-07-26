@@ -2,7 +2,7 @@
 ## Made it a YAML to be more friendly. Note to self: May do this with roster_information later.
 
 total_omni_drops_this_week: 2
-omni_token_name: "Slumbering Coil Curio" # Will leave both options in case this doesnt work
+omni_token_name: "Slumbering Coil Curio" # Will leave both options in case this doesn't work
 
 token_name:
   cloth:
