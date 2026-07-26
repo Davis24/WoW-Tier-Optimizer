@@ -48,9 +48,17 @@ python main.py
 
 ### Output
 
-The full output includes two tables showing the total tier dropped in raid, the distribution of tier (including the optimal choices - Omni, Catalyst, Great Vault, and Drops), everyone who obtained their tier set, and those still missing their tier set.
+The full output includes three tables: 
+- The distribution of tier (including the optimal choices - Omni, Catalyst, Great Vault, and Drops)
+- Total tier token drops
+- Who is Getting Tier
+
+Lastly, it includes text output on who obtained 4-piece and who did not.
 
 ![plot](./docs/output1.png)
+![plot](./docs/output2.png)
+![plot](./docs/output3.png)
+![plot](./docs/output4.png)
 
 ## Background Information
 
