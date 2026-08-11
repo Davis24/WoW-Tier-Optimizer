@@ -69,7 +69,7 @@ with open('./config/config.yaml', 'r') as file:
 
 
 vault_df = pd.read_csv("./input/vault_input.csv")
-
+vault_df.fillna(0, inplace=True)
 
 #####################
 # --- Data Setup  ---
@@ -197,16 +197,11 @@ for raider in raiders:
     raider_faction = raider_factions[raider]
     
     # Great Vault Slots - We can only take 1 item
-    prob += pulp.lpSum(vault_dv[raider][slot] for slot in tier_slots) <= 1
+    if len(vault_options[raider]) > 0 and vault_options[raider][0] != 0:
+        prob += pulp.lpSum(vault_dv[raider][slot] for slot in tier_slots) == 1
+    else:
+        prob += pulp.lpSum(vault_dv[raider][slot] for slot in tier_slots) == 0
     
-    # The item must actually exist in their vault
-    for slot in tier_slots:
-        if slot not in vault_options[raider]:
-            prob += vault_dv[raider][slot] == 0
-            
-    # Catalyst Constraint - Cannot use more than the charges the raider has
-    prob += pulp.lpSum(catalyst_dv[raider][slot] for slot in tier_slots) <= catalyst_charges[raider]
-
     # Slot Constraints
     for slot in tier_slots:
 
@@ -233,8 +228,6 @@ for raider in raiders:
                 for faction in factions:
                     prob += lfr_dv[raider][faction][group][slot] == 0
 
-            prob += vault_dv[raider][slot] == 0
-            prob += catalyst_dv[raider][slot] == 0
             prob += omni_dv[raider][slot] == 0
 
         # Slot Specific Allotment Constraint
@@ -242,20 +235,19 @@ for raider in raiders:
         prob += (pulp.lpSum(token_dv[raider][group][slot] for group in token_groups) 
                  + pulp.lpSum(lfr_dv[raider][faction][group][slot] for faction in factions for group in token_groups) 
                  + vault_dv[raider][slot] 
-                 + catalyst_dv[raider][slot] 
                  + omni_dv[raider][slot]) <= 1
 
     # Our maximum total tier_pieces from all content can technically be 5, but for this we only care about maximizing 4-piece
     total_pieces_expr = (current_count 
     + pulp.lpSum(token_dv[raider][group][slot] for group in token_groups for slot in tier_slots) 
     + pulp.lpSum(lfr_dv[raider][faction][group][slot] for faction in factions for group in token_groups for slot in tier_slots) 
-    + pulp.lpSum(vault_dv[raider][slot] + catalyst_dv[raider][slot] + omni_dv[raider][slot] for slot in tier_slots))
+    + pulp.lpSum(vault_dv[raider][slot] + omni_dv[raider][slot] for slot in tier_slots))
 
-    prob += total_pieces_expr <= 4
+    prob += total_pieces_expr <= 2
 
     # Set the 'has_4pc' variable (if total pieces equal 4, has_4pc can scale to 1) 
     # - this is how we tell who has completed 4-piece
-    prob += total_pieces_expr >= 4 * has_4pc[raider]
+    prob += total_pieces_expr >= 2 * has_4pc[raider]
 
 
 ############################
@@ -271,9 +263,7 @@ prob += pulp.lpSum(
         pulp.lpSum(token_dv[raider][group][slot] for group in token_groups) + 
         pulp.lpSum(lfr_dv[raider][faction][group][slot] for faction in factions for group in token_groups) + 
         vault_dv[raider][slot] + omni_dv[raider][slot]
-    )) + 
-     # Low weighting catalyst charges 
-    (player_weights[raider] * 0.99 * catalyst_dv[raider][slot]) for raider in raiders for slot in tier_slots
+    )) for raider in raiders for slot in tier_slots
 ) + pulp.lpSum(
     FOUR_PIECE_BONUS * has_4pc[raider] for raider in raiders
 ) 
@@ -287,7 +277,9 @@ rprint(f"Status: {pulp.LpStatus[prob.status]}")
 rprint("Generating Output.")
 raid_drop_token = []
 allocation_data = []
+
 for raider in raiders:
+    printed_text = False
     for slot in tier_slots:
         for group in token_groups:
             if token_dv[raider][group][slot].varValue == 1:
@@ -299,6 +291,7 @@ for raider in raiders:
                     'Faction': ''}
                 allocation_data.append(tmp)
                 raid_drop_token.append(tmp)
+                printed_text = True
             for faction in factions:
                 if lfr_dv[raider][faction][group][slot].varValue == 1:
                     tmp = {
@@ -309,35 +302,42 @@ for raider in raiders:
                         'Faction': raider_factions[raider]}
                     allocation_data.append(tmp)
                     raid_drop_token.append(tmp)
-        if vault_dv[raider][slot].varValue == 1 and has_4pc[raider].varValue == 1:
+                    printed_text = True
+        if vault_dv[raider][slot].varValue == 1:
             allocation_data.append({
                 'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]",  
                 'Class Pool': '', 
                 'Source': '[#FFA5A5]Great Vault[/#FFA5A5]', 
                 'Slot': slot, 
                 'Faction': ''})
-        if catalyst_dv[raider][slot].varValue == 1 and has_4pc[raider].varValue == 1:
-            allocation_data.append({
-                'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
-                'Class Pool': '', 
-                'Source': '[#E0AC3F]Use Catalyst Charge[/#E0AC3F]', 
-                'Slot': slot, 
-                'Faction': ''})
+        #if catalyst_dv[raider][slot].varValue == 1 and has_4pc[raider].varValue == 1:
+        #    allocation_data.append({
+        #        'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
+        #        'Class Pool': '', 
+        #        'Source': '[#E0AC3F]Use Catalyst Charge[/#E0AC3F]', 
+        #        'Slot': slot, 
+        #        'Faction': ''})
+            printed_text = True
         if omni_dv[raider][slot].varValue == 1:
-            allocation_data.append({
+            tmp = {
                 'Raider': f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}]", 
                 'Class Pool': '', 
                 'Source': '[#3F72E0]Omni Token[/#3F72E0]', 
                 'Slot': slot, 
-                'Faction': ''})  
-    allocation_data.append({'Raider':"-", 'Class Pool':"-", 'Source': "-", 'Slot':"-", 'Faction': "-"})
+                'Faction': ''}
+            printed_text = True 
+            allocation_data.append(tmp)
+            raid_drop_token.append(tmp)
+    if(printed_text):
+        allocation_data.append({'Raider':"-", 'Class Pool':"-", 'Source': "-", 'Slot':"-", 'Faction': "-"})
 results_df = pd.DataFrame(allocation_data)
 total_tokens_df = pd.DataFrame(total_tokens_output)
 who_is_get_df = pd.DataFrame(raid_drop_token)
 ###
 
 #snakes for snake tier
-distribution_table = Table(title='🐍🐍🐍 Optimal Distribution Table (Drops, Vaults & Catalyst)🐍🐍🐍')
+distribution_table = Table(title='🐍🐍🐍 Optimal Distribution Table (Drops, Vaults)🐍🐍🐍', 
+                           caption="Optimizing for 2-piece, knowing there are two catalyst charges.")
 df_to_table(results_df, rich_table=distribution_table)
 console=Console()
 console.print(distribution_table)
@@ -352,7 +352,7 @@ df_to_table(who_is_get_df, rich_table=who_is_get_table)
 console.print(who_is_get_table)
 
 
-print("\nSet Bonus Milestones Achieved This Week:")
+print("\nSet Bonus Milestones Achieved This Week (with Cata Charge):")
 for raider in raiders:
     if has_4pc[raider].varValue == 1:
         rprint(f"[#{raiders_dict[raider]["class"].value[0]}]{raider}[/#{raiders_dict[raider]["class"].value[0]}] ({raider_groups[raider]}) has secured their 4-Piece Set Bonus!")

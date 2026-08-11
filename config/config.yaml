@@ -34,52 +34,52 @@ token_name:
 Faction.ALLIANCE: 
   cloth:
     Head: 0
-    Shoulder: 1
+    Shoulder: 0
     Chest: 0
     Hands: 0 
-    Legs: 1
+    Legs: 0
   leather:
     Head: 0
-    Shoulder: 1
+    Shoulder: 0
     Chest: 0
     Hands: 0 
-    Legs: 1
+    Legs: 0
   mail:
     Head: 0
-    Shoulder: 1
+    Shoulder: 0
     Chest: 0
     Hands: 0 
-    Legs: 1
+    Legs: 0
   plate:
     Head: 0
-    Shoulder: 1
+    Shoulder: 0
     Chest: 0
     Hands: 0 
-    Legs: 1
+    Legs: 0
 
 Faction.HORDE: 
   cloth:
     Head: 0
-    Shoulder: 1
+    Shoulder: 0
     Chest: 0
     Hands: 0 
-    Legs: 1
+    Legs: 0
   leather:
     Head: 0
-    Shoulder: 1
+    Shoulder: 0
     Chest: 0
     Hands: 0 
-    Legs: 1
+    Legs: 0
   mail:
     Head: 0
-    Shoulder: 1
+    Shoulder: 0
     Chest: 0
     Hands: 0 
-    Legs: 1
+    Legs: 0
   plate:
     Head: 0
-    Shoulder: 1
+    Shoulder: 0
     Chest: 0
     Hands: 0 
-    Legs: 1
+    Legs: 0
 

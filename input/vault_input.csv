@@ -1,8 +1,8 @@
 Name,Bonus Roll Boss,Catalyst Charges,Catalyst Slots (Hero),Current Tier Slots,Has 4 Set,Vault Option (Tier)
-Boom,,2,,Head,FALSE,"Shoulder, Chest"
+Boom,,2,,,FALSE,"Shoulder, Chest"
 Charlie,,2,,,FALSE,
 Fka,,2,,,FALSE,
-Jayken,,2,,,FALSE,
+Jayken,,2,,Head,FALSE,
 Nocth,,2,,,FALSE,
 Nymu,,2,,,FALSE,
 Puti,,2,,,FALSE,
