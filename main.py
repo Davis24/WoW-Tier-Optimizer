@@ -142,7 +142,7 @@ raiders_dict = leather_raiders | cloth_raiders | mail_raiders | plate_raiders
 for raider in raiders_dict:
     current_tier[raider] = raiders_dict[raider]["current_tier"]
     vault_options[raider] = raiders_dict[raider]["vault_options"]
-    catalyst_charges[raider] = raiders_dict[raider]["catalyst_charges"]
+    #catalyst_charges[raider] = raiders_dict[raider]["catalyst_charges"]
     player_weights[raider] = raiders_dict[raider]["player_weights"]
     raider_factions[raider] = raiders_dict[raider]["faction"]
 
@@ -163,7 +163,7 @@ prob = pulp.LpProblem("WoW_Tier_Optimizer", pulp.LpMaximize) #For those not fami
 
 token_dv = pulp.LpVariable.dicts("Token", (raiders, token_groups, tier_slots), cat='Binary')
 vault_dv = pulp.LpVariable.dicts("Vault", (raiders, tier_slots), cat='Binary')
-catalyst_dv = pulp.LpVariable.dicts("Catalyst", (raiders, tier_slots), cat='Binary')
+#catalyst_dv = pulp.LpVariable.dicts("Catalyst", (raiders, tier_slots), cat='Binary')
 omni_dv = pulp.LpVariable.dicts("OmniToken", (raiders, tier_slots), cat='Binary')
 lfr_dv = pulp.LpVariable.dicts("LFRToken", (raiders, factions, token_groups, tier_slots), cat='Binary')
 
