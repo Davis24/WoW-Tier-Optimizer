@@ -4,8 +4,8 @@
             "class" : "MAGE",
             "type" : "DPS",
             "faction": "HORDE",
-            "current_tier": ["Head"],  
-            "vault_options": ["Shoulder"],
+            "current_tier": [],  
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 1.0
         }, 
@@ -13,26 +13,26 @@
             "class" : "PRIEST",
             "type" : "HEALER",
             "faction": "HORDE",
-            "current_tier": ["Chest", "Legs"], 
-            "vault_options": ["Head"],
+            "current_tier": [], 
+            "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
         },
         "JD": {
             "class" : "MAGE",
             "type" : "DPS",
-            "faction": "HORDE",
-            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "faction": "ALLIANCE",
+            "current_tier": [],
             "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
         },
-        "Marcx": {
+        "Marcsx": {
             "class" : "WARLOCK",
             "type" : "DPS",
             "current_tier": [],
             "faction": "HORDE",
-            "vault_options": ["Chest", "Legs"],
+            "vault_options": [],
             "catalyst_charges": 2,
             "player_weights": 1.0
         },     
@@ -40,28 +40,26 @@
             "class" : "MAGE",
             "type" : "DPS",
             "faction": "HORDE",
-            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "current_tier": [],
             "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
         },
-
         "Szardz": {
             "class" : "WARLOCK",
             "type" : "DPS",
             "faction": "HORDE",
-            "current_tier": ["Head", "Chest"],
-            "vault_options": ["Hands"],
+            "current_tier": [],
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 1.0
         },
-
         "Ulti": {
             "class" : "PRIEST",
             "type" : "DPS",
-            "faction": "HORDE",
-            "current_tier": ["Head", "Chest"],
-            "vault_options": ["Hands"],
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 1.0
         }
@@ -70,9 +68,9 @@
         "Boom": {
             "class": "DRUID",
             "type": "DPS",
-            "faction": "ALLIANCE",
-            "current_tier": ["Head"],  
-            "vault_options": ["Shoulder"],
+            "faction": "HORDE",
+            "current_tier": [],  
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 2.0
         }, 
@@ -81,8 +79,8 @@
             "class" : "DRUID",
             "type" : "TANK",
             "faction": "ALLIANCE",
-            "current_tier": ["Chest", "Legs"], 
-            "vault_options": ["Head"],
+            "current_tier": [], 
+            "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 0.5
         },
@@ -92,7 +90,7 @@
             "type" : "DPS",
             "faction": "ALLIANCE",
             "current_tier": [],
-            "vault_options": ["Chest", "Legs"],
+            "vault_options": [],
             "catalyst_charges": 2,
             "player_weights": 2.0
         },
@@ -101,7 +99,7 @@
             "class" : "ROGUE",
             "type" : "DPS",
             "faction": "HORDE",
-            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "current_tier": [],
             "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 2.0
@@ -110,9 +108,9 @@
         "Nocth": {
             "class" : "DEMON_HUNTER",
             "type" : "DPS",
-            "faction": "HORDE",
-            "current_tier": ["Head", "Chest"],
-            "vault_options": ["Hands"],
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 1.0
         },
@@ -120,9 +118,9 @@
         "Nymu": {
             "class" : "MONK",
             "type" : "HEALER",
-            "faction": "HORDE",
-            "current_tier": ["Head", "Chest"],
-            "vault_options": ["Hands"],
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 1.0
         },
@@ -130,9 +128,9 @@
         "Puti": {
             "class" : "DRUID",
             "type" : "HEALER",
-            "faction": "HORDE",
-            "current_tier": ["Head", "Chest"],
-            "vault_options": ["Hands"],
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 1.0
         },
@@ -140,19 +138,19 @@
         "Rev": {
             "class" : "MONK",
             "type" : "DPS",
-            "faction": "HORDE",
-            "current_tier": ["Head", "Chest"],
-            "vault_options": ["Hands"],
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 1.0
         },
 
         "Vao": {
-            "class" : "DEMON_HUNTER",
+            "class" : "DRUID",
             "type" : "DPS",
-            "faction": "HORDE",
-            "current_tier": ["Head", "Chest"],
-            "vault_options": ["Hands"],
+            "faction": "ALLIANCE",
+            "current_tier": [],
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 1.0
         }
@@ -161,9 +159,9 @@
         "Astra": {
             "class" : "EVOKER",
             "type" : "HEALER",
-            "faction": "ALLIANCE",
-            "current_tier": ["Head"],  
-            "vault_options": ["Shoulder"],
+            "faction": "HORDE",
+            "current_tier": [],  
+            "vault_options": [],
             "catalyst_charges": 1,
             "player_weights": 1.0
         }, 
@@ -172,8 +170,8 @@
             "class" : "HUNTER",
             "type" : "DPS",
             "faction": "ALLIANCE",
-            "current_tier": ["Chest", "Legs"], 
-            "vault_options": ["Head"],
+            "current_tier": [], 
+            "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
         },
@@ -181,9 +179,9 @@
         "Elaine": {
             "class" : "EVOKER",
             "type" : "DPS",
-            "faction": "ALLIANCE",
+            "faction": "HORDE",
             "current_tier": [],
-            "vault_options": ["Chest", "Legs"],
+            "vault_options": [],
             "catalyst_charges": 2,
             "player_weights": 1.0
         },
@@ -192,7 +190,7 @@
             "class" : "SHAMAN",
             "type" : "DPS",
             "faction": "ALLIANCE",
-            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "current_tier": [],
             "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
@@ -201,9 +199,9 @@
         "Kyle": {
             "class" : "SHAMAN",
             "type" : "DPS",
-            "faction": "ALLIANCE",
+            "faction": "HORDE",
             "current_tier": [],
-            "vault_options": ["Chest", "Legs"],
+            "vault_options": [],
             "catalyst_charges": 2,
             "player_weights": 1.0
         },
@@ -212,7 +210,7 @@
             "class" : "HUNTER",
             "type" : "DPS",
             "faction": "ALLIANCE",
-            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "current_tier": [],
             "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
@@ -223,8 +221,8 @@
             "class" : "DEATH_KNIGHT",
             "type" : "DPS",
             "faction": "ALLIANCE",
-            "current_tier": ["Head"],  
-            "vault_options": ["Shoulder"],
+            "current_tier": [],  
+            "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
         }, 
@@ -233,8 +231,8 @@
             "class" : "PALADIN",
             "type" : "TANK",
             "faction": "ALLIANCE",
-            "current_tier": ["Chest", "Legs"], 
-            "vault_options": ["Head"],
+            "current_tier": [], 
+            "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
         },
@@ -244,7 +242,7 @@
             "type" : "HEALER",
             "faction": "ALLIANCE",
             "current_tier": [],
-            "vault_options": ["Chest", "Legs"],
+            "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
         },
@@ -253,7 +251,7 @@
             "class" : "WARRIOR",
             "type" : "DPS",
             "faction": "HORDE",
-            "current_tier": ["Shoulder", "Hands", "Legs"],
+            "current_tier": [],
             "vault_options": [],
             "catalyst_charges": 0,
             "player_weights": 1.0
